@@ -9,7 +9,6 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 public class Bot implements LongPollingSingleThreadUpdateConsumer {
 
-    // Измените на package-private (уберите private)
     TelegramClient telegramClient;
 
     public Bot(String botToken) {
