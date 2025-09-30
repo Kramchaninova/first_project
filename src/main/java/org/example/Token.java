@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * загружаем токен бота из файла
+ */
 public class Token {
     String token = "";
     public String get() {

@@ -6,7 +6,11 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BotTest {
-
+    /**
+     * Проверяет обработку обычных сообщений.
+     * Тестирует что бот повторяет текст пользователя
+     * Проверяет что сообщение отправляется в тот чат
+     */
     // Проверка обработки текстового сообщения
     @Test
     void testHandleTextMessage() {
@@ -18,6 +22,10 @@ class BotTest {
         assertTrue(result.getText().contains("/help"));
     }
 
+    /**
+     * Проверяет приветственное сообщение с описанием бота и создателями.
+     * Убеждается что есть ссылка на помощь и корректный ID чата.
+     */
     // Проверка команды /start
     @Test
     void testStartCommand() {
@@ -29,6 +37,9 @@ class BotTest {
         assertTrue(result.getText().contains("Никой и Настей"));
     }
 
+    /**
+     * Проверяет наличие списка команд и описания работы бота.
+     */
     // Проверка команды /help
     @Test
     void testHelpCommand() {
@@ -40,6 +51,10 @@ class BotTest {
         assertTrue(result.getText().contains("/start"));
     }
 
+    /**
+     * Проверяет сообщение об ошибке для неподдерживаемых команд.
+     * а также, что бот предлагает помощь
+     */
     // Проверка неизвестной команды
     @Test
     void testUnknownCommand() {

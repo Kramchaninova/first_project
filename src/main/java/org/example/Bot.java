@@ -7,6 +7,9 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
+/**
+ * Класс, который реализует бота, в нем пишем функционал
+ */
 public class Bot implements LongPollingSingleThreadUpdateConsumer {
 
     TelegramClient telegramClient;
@@ -14,7 +17,10 @@ public class Bot implements LongPollingSingleThreadUpdateConsumer {
     public Bot(String botToken) {
         this.telegramClient = new OkHttpTelegramClient(botToken);
     }
-
+/**
+ * Основный метод, в котором мы проверяем сообщения,
+ * извлекаем текст, ID, отправляем ответ с обработкой ошибок
+ */
     public void consume(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
             String messageText = update.getMessage().getText();
@@ -36,6 +42,9 @@ public class Bot implements LongPollingSingleThreadUpdateConsumer {
         }
     }
 
+    /**
+     *Обработка обычных сообщений, еслли в бот был выслан текст, то создается ответ
+     */
 
     SendMessage handleTextMessage(String messageText, long chatId) {
         return SendMessage.builder()
@@ -44,7 +53,10 @@ public class Bot implements LongPollingSingleThreadUpdateConsumer {
                 .build();
     }
 
-
+    /**
+     * Если в сообщении была команда, то обрабатываем ее
+     *и высылаем текст, который привязан к командам
+     */
     SendMessage handleCommand(String command, long chatId) {
         String responseText;
 
