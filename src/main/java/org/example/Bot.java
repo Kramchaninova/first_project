@@ -1,3 +1,4 @@
+
 package org.example;
 
 import org.telegram.telegrambots.client.okhttp.OkHttpTelegramClient;
@@ -7,8 +8,14 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
+ /**
+  * Телеграм-бот, реализующий функционал эхо-бота.
+  * Обрабатывает текстовые сообщения и команды, возвращая ответы пользователю.
+  */
+
 /**
- * Класс, который реализует бота, в нем пишем функционал
+ * Класс, который реализует бота, пишем весь функционал
+ *
  */
 public class Bot implements LongPollingSingleThreadUpdateConsumer {
 
@@ -18,8 +25,9 @@ public class Bot implements LongPollingSingleThreadUpdateConsumer {
         this.telegramClient = new OkHttpTelegramClient(botToken);
     }
 /**
- * Основный метод, в котором мы проверяем сообщения,
+ * Основный метод, в котором мы обрабатываем входящие сообщения,
  * извлекаем текст, ID, отправляем ответ с обработкой ошибок
+ *
  */
     public void consume(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
@@ -43,7 +51,7 @@ public class Bot implements LongPollingSingleThreadUpdateConsumer {
     }
 
     /**
-     *Обработка обычных сообщений, еслли в бот был выслан текст, то создается ответ
+     *Обработка обычных сообщений, еслли в бот был выслан текст, то создается эхо ответ
      */
 
     SendMessage handleTextMessage(String messageText, long chatId) {
@@ -54,7 +62,7 @@ public class Bot implements LongPollingSingleThreadUpdateConsumer {
     }
 
     /**
-     * Если в сообщении была команда, то обрабатываем ее
+     * Если в сообщении была команда, т.е. текст начинается с /, то обрабатываем ее
      *и высылаем текст, который привязан к командам
      */
     SendMessage handleCommand(String command, long chatId) {

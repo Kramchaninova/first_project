@@ -5,13 +5,22 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * загружаем токен бота из файла
+ * Класс для загрузки и хранения токена бота из файла.
+ * Обеспечивает безопасное чтение токена из текстового файла.
  */
 public class Token {
     String token = "";
+
+    /**
+     * Возвращает текущий токен бота
+     */
     public String get() {
         return token;
     }
+
+    /**
+     * Загружает токен бота из файла tocken.txt в ресурсах
+     */
     public void load() {
         String fileName = "src/main/resources/tocken.txt";
 
