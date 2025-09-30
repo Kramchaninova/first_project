@@ -15,6 +15,7 @@ import java.util.List;
 
 /**
  * Главный класс для запуска и настройки Telegram бота
+
  * Реализует механизм long-polling для получения обновлений
  */
 public class Main {

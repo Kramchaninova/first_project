@@ -16,6 +16,7 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
 /**
  * Класс, который реализует бота, пишем весь функционал
  *
+ *
  */
 public class Bot implements LongPollingSingleThreadUpdateConsumer {
 
