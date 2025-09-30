@@ -36,7 +36,7 @@ public class Bot implements LongPollingSingleThreadUpdateConsumer {
         }
     }
 
-    // Измените на package-private (уберите private)
+
     SendMessage handleTextMessage(String messageText, long chatId) {
         return SendMessage.builder()
                 .chatId(chatId)
@@ -44,7 +44,7 @@ public class Bot implements LongPollingSingleThreadUpdateConsumer {
                 .build();
     }
 
-    // Измените на package-private (уберите private)
+
     SendMessage handleCommand(String command, long chatId) {
         String responseText;
 
