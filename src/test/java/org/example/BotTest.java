@@ -28,7 +28,6 @@ class BotTest {
      * Убеждается что есть ссылка на помощь и корректный ID чата.
      */
 
-
     @Test
     void testStartCommand() {
         Bot bot = new Bot("test-token");
@@ -43,7 +42,6 @@ class BotTest {
      * Проверка команды /help
      * Проверяет наличие списка команд и описания работы бота.
      */
-
 
     @Test
     void testHelpCommand() {
@@ -60,7 +58,7 @@ class BotTest {
      * Проверяет сообщение об ошибке для неподдерживаемых команд.
      * а также, что бот предлагает помощь
      */
-
+  
     @Test
     void testUnknownCommand() {
         Bot bot = new Bot("test-token");
