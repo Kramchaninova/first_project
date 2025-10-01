@@ -8,27 +8,26 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
- /**
-  * Телеграм-бот, реализующий функционал эхо-бота.
-  * Обрабатывает текстовые сообщения и команды, возвращая ответы пользователю.
-  */
-
 /**
- * Класс, который реализует бота, пишем весь функционал
- *
- *
+ * Класс бота, реализующий функционал эхо-бота
+ * Обрабатывает текстовые сообщения и команды, возвращая ответы пользователю
  */
+
 public class Bot implements LongPollingSingleThreadUpdateConsumer {
+    /**
+     * Клиент для взаимодействия с Telegram API
+     */
+    private final TelegramClient telegramClient;
 
-    TelegramClient telegramClient;
-
+    /**
+     * публичный конструктор, который инициализирует телеграм-клиента с переданным токеном
+     */
     public Bot(String botToken) {
         this.telegramClient = new OkHttpTelegramClient(botToken);
     }
 /**
  * Основный метод, в котором мы обрабатываем входящие сообщения,
- * извлекаем текст, ID, отправляем ответ с обработкой ошибок
- *
+ * извлекает текст, ID, отправляет ответ с обработкой ошибок
  */
     public void consume(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
@@ -52,7 +51,8 @@ public class Bot implements LongPollingSingleThreadUpdateConsumer {
     }
 
     /**
-     *Обработка обычных сообщений, еслли в бот был выслан текст, то создается эхо ответ
+     *Обработка обычных сообщений,
+     * еслли в бот был выслан текст, то создается эхо ответ
      */
 
     SendMessage handleTextMessage(String messageText, long chatId) {
@@ -63,7 +63,8 @@ public class Bot implements LongPollingSingleThreadUpdateConsumer {
     }
 
     /**
-     * Если в сообщении была команда, т.е. текст начинается с /, то обрабатываем ее
+     * Если в сообщении была команда, т.е. текст начинается с /,
+     * то обрабатываем ее
      *и высылаем текст, который привязан к командам
      */
     SendMessage handleCommand(String command, long chatId) {
