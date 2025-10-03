@@ -3,14 +3,10 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 .kotlin
-src/main/resources/tocken.txt
+src/main/resources/TOCKEN.txt
 
 ### IntelliJ IDEA ###
 .idea
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
 *.iws
 *.iml
 *.ipr
