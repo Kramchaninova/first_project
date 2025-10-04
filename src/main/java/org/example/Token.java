@@ -26,7 +26,7 @@ public class Token {
 
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             token = reader.readLine();
-            System.out.println("Токен загружен: " + token);
+            System.out.println("Токен загружен");
         } catch (IOException e) {
             e.printStackTrace();
         }
