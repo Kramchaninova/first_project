@@ -1,7 +1,7 @@
 package org.example;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Assertions;
 
 /** Класс BotTest для проверки логики программы
  * Проверяет обработку обычных сообщений.
@@ -18,7 +18,7 @@ class BotTest {
     @Test
     void testHandleTextMessage() {
         String result = botLogic.handleTextMessage("Тестовое сообщение", 12345L);
-        assertEquals("Ваше сообщение: Тестовое сообщение\n\n" +
+        Assertions.assertEquals("Ваше сообщение: Тестовое сообщение\n\n" +
                 "для помощи введите /help", result);
     }
 
@@ -32,7 +32,7 @@ class BotTest {
     void testStartCommand() {
         String result = botLogic.handleCommand("/start", 12345L);
 
-        assertEquals("Вас приветствует эхо телеграмм бот, созданный Никой и Настей\n\n" +
+        Assertions.assertEquals("Вас приветствует эхо телеграмм бот, созданный Никой и Настей\n\n" +
                 "Он ничего не умеет кроме вывода вашего сообщения и кнопки справки\n" +
                 "Введите /help чтобы телеграмм бот оказал вам бесполезную помощь.", result);
     }
@@ -46,7 +46,7 @@ class BotTest {
     void testHelpCommand() {
         String result = botLogic.handleCommand("/help", 12345L);
 
-        assertEquals("  **Список доступных команд:**\n\n" +
+        Assertions.assertEquals("  **Список доступных команд:**\n\n" +
                 "'/start' - начать работу с ботом\n" +
                 "'/help' - показать эту справку\n" +
                 "     **Как взаимодействовать с ботом:**\n" +
@@ -65,7 +65,7 @@ class BotTest {
     void testUnknownCommand() {
         String result = botLogic.handleCommand("/unknown", 12345L);
 
-        assertEquals("Неизвестная команда. Введите /help для списка доступных команд.", result);
+        Assertions.assertEquals("Неизвестная команда. Введите /help для списка доступных команд.", result);
     }
 
 }
