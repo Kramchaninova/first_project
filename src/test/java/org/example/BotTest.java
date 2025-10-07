@@ -1,25 +1,25 @@
 package org.example;
 
 import org.junit.jupiter.api.Test;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.junit.jupiter.api.Assertions;
 
-import static org.junit.jupiter.api.Assertions.*;
+/** Класс BotTest для проверки логики программы
+ * Проверяет обработку обычных сообщений.
+ * Тестирует что бот повторяет текст пользователя
+ * Тестирует команды
+ */
+
 
 class BotTest {
-    /**
-     * Проверяет обработку обычных сообщений.
-     * Тестирует что бот повторяет текст пользователя
-     * Проверяет что сообщение отправляется в тот чат
-     * Проверка обработки текстового сообщения
+    private final BotLogic botLogic = new BotLogic();
+    /** Проверка команды на эхо
+     * При входе слова отправляет эхо (то же самое)
      */
     @Test
     void testHandleTextMessage() {
-        Bot bot = new Bot("test-token");
-        SendMessage result = bot.handleTextMessage("Тестовое сообщение", 12345L);
-
-        assertEquals("12345", result.getChatId());
-        assertTrue(result.getText().contains("Ваше сообщение: Тестовое сообщение"));
-        assertTrue(result.getText().contains("/help"));
+        String result = botLogic.handleTextMessage("Тестовое сообщение", 12345L);
+        Assertions.assertEquals("Ваше сообщение: Тестовое сообщение\n\n" +
+                "для помощи введите /help", result);
     }
 
     /**
@@ -30,12 +30,11 @@ class BotTest {
 
     @Test
     void testStartCommand() {
-        Bot bot = new Bot("test-token");
-        SendMessage result = bot.handleCommand("/start", 12345L);
+        String result = botLogic.handleCommand("/start", 12345L);
 
-        assertEquals("12345", result.getChatId());
-        assertTrue(result.getText().contains("Вас приветствует эхо телеграмм бот"));
-        assertTrue(result.getText().contains("Никой и Настей"));
+        Assertions.assertEquals("Вас приветствует эхо телеграмм бот, созданный Никой и Настей\n\n" +
+                "Он ничего не умеет кроме вывода вашего сообщения и кнопки справки\n" +
+                "Введите /help чтобы телеграмм бот оказал вам бесполезную помощь.", result);
     }
 
     /**
@@ -45,12 +44,15 @@ class BotTest {
 
     @Test
     void testHelpCommand() {
-        Bot bot = new Bot("test-token");
-        SendMessage result = bot.handleCommand("/help", 12345L);
+        String result = botLogic.handleCommand("/help", 12345L);
 
-        assertEquals("12345", result.getChatId());
-        assertTrue(result.getText().contains("Список доступных команд"));
-        assertTrue(result.getText().contains("/start"));
+        Assertions.assertEquals("  **Список доступных команд:**\n\n" +
+                "'/start' - начать работу с ботом\n" +
+                "'/help' - показать эту справку\n" +
+                "     **Как взаимодействовать с ботом:**\n" +
+                "Телеграмм бот работает по принципу ввода сообщение:\n" +
+                "- если сообщение начинается не '/' то он просто повторяет\n" +
+                "- если же начинается с '/' то он воспринимает это как команду", result);
     }
 
     /**
@@ -58,15 +60,12 @@ class BotTest {
      * Проверяет сообщение об ошибке для неподдерживаемых команд.
      * а также, что бот предлагает помощь
      */
-  
+
     @Test
     void testUnknownCommand() {
-        Bot bot = new Bot("test-token");
-        SendMessage result = bot.handleCommand("/unknown", 12345L);
+        String result = botLogic.handleCommand("/unknown", 12345L);
 
-        assertEquals("12345", result.getChatId());
-        assertTrue(result.getText().contains("Неизвестная команда"));
-        assertTrue(result.getText().contains("/help"));
+        Assertions.assertEquals("Неизвестная команда. Введите /help для списка доступных команд.", result);
     }
 
 }
