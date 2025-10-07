@@ -11,18 +11,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 class BotTest {
-
+    private final BotLogic botLogic = new BotLogic();
     /** Проверка команды на эхо
      * При входе слова отправляет эхо (то же самое)
      */
     @Test
     void testHandleTextMessage() {
-        Bot bot = new Bot("test-token");
-        var result = bot.handleTextMessage("Тестовое сообщение", 12345L);
-
-        assertEquals("12345", result.getChatId());
+        String result = botLogic.handleTextMessage("Тестовое сообщение", 12345L);
         assertEquals("Ваше сообщение: Тестовое сообщение\n\n" +
-                "для помощи введите /help", result.getText());
+                "для помощи введите /help", result);
     }
 
     /**
@@ -33,13 +30,11 @@ class BotTest {
 
     @Test
     void testStartCommand() {
-        Bot bot = new Bot("test-token");
-        var result = bot.handleCommand("/start", 12345L);
+        String result = botLogic.handleCommand("/start", 12345L);
 
-        assertEquals("12345", result.getChatId());
         assertEquals("Вас приветствует эхо телеграмм бот, созданный Никой и Настей\n\n" +
                 "Он ничего не умеет кроме вывода вашего сообщения и кнопки справки\n" +
-                "Введите /help чтобы телеграмм бот оказал вам бесполезную помощь.", result.getText());
+                "Введите /help чтобы телеграмм бот оказал вам бесполезную помощь.", result);
     }
 
     /**
@@ -49,17 +44,15 @@ class BotTest {
 
     @Test
     void testHelpCommand() {
-        Bot bot = new Bot("test-token");
-        var result = bot.handleCommand("/help", 12345L);
+        String result = botLogic.handleCommand("/help", 12345L);
 
-        assertEquals("12345", result.getChatId());
         assertEquals("  **Список доступных команд:**\n\n" +
                 "'/start' - начать работу с ботом\n" +
                 "'/help' - показать эту справку\n" +
                 "     **Как взаимодействовать с ботом:**\n" +
                 "Телеграмм бот работает по принципу ввода сообщение:\n" +
                 "- если сообщение начинается не '/' то он просто повторяет\n" +
-                "- если же начинается с '/' то он воспринимает это как команду", result.getText());
+                "- если же начинается с '/' то он воспринимает это как команду", result);
     }
 
     /**
@@ -70,11 +63,9 @@ class BotTest {
 
     @Test
     void testUnknownCommand() {
-        Bot bot = new Bot("test-token");
-        var result = bot.handleCommand("/unknown", 12345L);
+        String result = botLogic.handleCommand("/unknown", 12345L);
 
-        assertEquals("12345", result.getChatId());
-        assertEquals("Неизвестная команда. Введите /help для списка доступных команд.", result.getText());
+        assertEquals("Неизвестная команда. Введите /help для списка доступных команд.", result);
     }
 
 }

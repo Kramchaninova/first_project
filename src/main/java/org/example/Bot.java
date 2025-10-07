@@ -25,18 +25,16 @@ public class Bot implements LongPollingSingleThreadUpdateConsumer {
      */
     private final TelegramClient telegramClient;
 
+    private final BotLogic botLogic;
+
     /**
      * публичный конструктор, который инициализирует телеграм-клиента с переданным токеном
      */
     public Bot(String botToken) {
-        //Добавлено сравнение
-        //Сравниваем строки на равенство, если не равный значит реальный пользователь
-        if ("test-token".equals(botToken)) {
-            this.telegramClient = null; //Для тестов
-        } else {
-            this.telegramClient = new OkHttpTelegramClient(botToken);
-            registerBotCommands();
-        }
+        this.botLogic = new BotLogic();
+
+        this.telegramClient = new OkHttpTelegramClient(botToken);
+        registerBotCommands();
     }
 
 
@@ -71,75 +69,48 @@ public class Bot implements LongPollingSingleThreadUpdateConsumer {
 
 
     /**
-    * Основный метод, в котором мы обрабатываем входящие сообщения,
-    * извлекает текст, ID, отправляет ответ с обработкой ошибок
-    */
+     * Основный метод, в котором мы обрабатываем входящие сообщения,
+     * извлекает текст, ID, отправляет ответ с обработкой ошибок
+     */
     public void consume(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
             String messageText = update.getMessage().getText();
             long chatId = update.getMessage().getChatId();
 
-            SendMessage message;
+            String message;
 
             if (messageText.startsWith("/")) {
-                message = handleCommand(messageText, chatId);
+                message = botLogic.handleCommand(messageText, chatId);
             } else {
-                message = handleTextMessage(messageText, chatId);
+                message = botLogic.handleTextMessage(messageText, chatId);
             }
 
-            try {
-                telegramClient.execute(message);
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
+            sendResponse(chatId, message);
         }
     }
 
     /**
-     *Обработка обычных сообщений,
-     * еслли в бот был выслан текст, то создается эхо ответ
+     * sendResponse - метод отправки сообщения пользователю
+     * @param chatId
+     * @param text
      */
 
-    SendMessage handleTextMessage(String messageText, long chatId) {
-        return SendMessage.builder()
-                .chatId(chatId)
-                .text("Ваше сообщение: " + messageText + "\n\nдля помощи введите /help")
-                .build();
-    }
+    private void sendResponse(long chatId, String text) {
+        try {
+            SendMessage message = SendMessage.builder()
+                    .chatId(chatId)
+                    .text(text)
+                    .build();
 
-    /**
-     * Если в сообщении была команда, т.е. текст начинается с /,
-     * то обрабатываем ее
-     *и высылаем текст, который привязан к командам
-     */
-    SendMessage handleCommand(String command, long chatId) {
-        String responseText;
 
-        switch (command) {
-            case "/start":
-                responseText = "Вас приветствует эхо телеграмм бот, созданный Никой и Настей\n\n" +
-                        "Он ничего не умеет кроме вывода вашего сообщения и кнопки справки\n" +
-                        "Введите /help чтобы телеграмм бот оказал вам бесполезную помощь.";
-                break;
+            telegramClient.execute(message);
 
-            case "/help":
-                responseText = "  **Список доступных команд:**\n\n" +
-                        "'/start' - начать работу с ботом\n" +
-                        "'/help' - показать эту справку\n" +
-                        "     **Как взаимодействовать с ботом:**\n" +
-                        "Телеграмм бот работает по принципу ввода сообщение:\n" +
-                        "- если сообщение начинается не '/' то он просто повторяет\n" +
-                        "- если же начинается с '/' то он воспринимает это как команду";
-                break;
-
-            default:
-                responseText = "Неизвестная команда. Введите /help для списка доступных команд.";
-                break;
+        } catch (TelegramApiException e) {
+            // Обрабатываем ошибки отправки сообщения
+            System.err.println("ошибка отправки");
+            e.printStackTrace();
         }
 
-        return SendMessage.builder()
-                .chatId(chatId)
-                .text(responseText)
-                .build();
+
     }
 }
