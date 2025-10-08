@@ -1,16 +1,38 @@
 package org.example;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /** BotLogic -  класс обрабатывает логику бота
  *
  */
 
 public class BotLogic {
+
+    // Хэшмап для хранения кол-ва сообщений каждого пользователя
+    private final Map<Long, Integer> userMessageCount = new HashMap<>();
+
+    /**
+     * Обработка сообщения - увеличение счётчика сообщений пользователя,
+     * распознавание команды или обычного сообщения
+     */
+
+    public String handleMessage(String messageText, long chatId) {
+        userMessageCount.put(chatId, userMessageCount.getOrDefault(chatId, 0) + 1);
+        if (messageText.startsWith("/")) {
+            return handleCommand(messageText, chatId);
+        } else {
+            return handleTextMessage(messageText, chatId);
+        }
+
+    }
+
     /**
      *Обработка обычных сообщений,
      * еслли в бот был выслан текст, то создается эхо ответ
      */
 
-    public  String handleTextMessage(String messageText, long chatId) {
+    public String handleTextMessage(String messageText, long chatId) {
         return "Ваше сообщение: " + messageText + "\n\nдля помощи введите /help";
     }
 
@@ -33,10 +55,15 @@ public class BotLogic {
                 return "  **Список доступных команд:**\n\n" +
                         "'/start' - начать работу с ботом\n" +
                         "'/help' - показать эту справку\n" +
+                        "'/stats' - показать кол-во отправленных сообщений\n" +
                         "     **Как взаимодействовать с ботом:**\n" +
                         "Телеграмм бот работает по принципу ввода сообщение:\n" +
                         "- если сообщение начинается не '/' то он просто повторяет\n" +
                         "- если же начинается с '/' то он воспринимает это как команду";
+
+            case "/stats":
+                int count = userMessageCount.getOrDefault(chatId, 0);
+                return "Вы отправили сообщений: " + count;
 
             default:
                 return "Неизвестная команда. Введите /help для списка доступных команд.";

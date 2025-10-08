@@ -3,6 +3,8 @@ package org.example;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /** Класс BotTest для проверки логики программы
  * Проверяет обработку обычных сообщений.
  * Тестирует что бот повторяет текст пользователя
@@ -12,6 +14,18 @@ import org.junit.jupiter.api.Assertions;
 
 class BotTest {
     private final BotLogic botLogic = new BotLogic();
+
+    /** Проверка команды /stats
+     * Проверяет наличие сообщения и то, что счётчик сообщений больше 1
+     */
+    @Test
+    void testHandleMessage() {
+        String result = botLogic.handleMessage("/stats", 12345L);
+        assertTrue(result.contains("Вы отправили сообщений: "));
+        String numberOnly = result.replaceAll("\\D+", "");
+        int digit = Integer.parseInt(numberOnly);
+        assertTrue(digit > 0);
+    }
     /** Проверка команды на эхо
      * При входе слова отправляет эхо (то же самое)
      */
@@ -49,6 +63,7 @@ class BotTest {
         Assertions.assertEquals("  **Список доступных команд:**\n\n" +
                 "'/start' - начать работу с ботом\n" +
                 "'/help' - показать эту справку\n" +
+                "'/stats' - показать кол-во отправленных сообщений\n" +
                 "     **Как взаимодействовать с ботом:**\n" +
                 "Телеграмм бот работает по принципу ввода сообщение:\n" +
                 "- если сообщение начинается не '/' то он просто повторяет\n" +
