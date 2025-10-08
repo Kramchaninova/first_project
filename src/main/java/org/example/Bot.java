@@ -46,6 +46,7 @@ public class Bot implements LongPollingSingleThreadUpdateConsumer {
             List<BotCommand> commands = new ArrayList<>();
             commands.add(new BotCommand("start", "начать работу с ботом"));
             commands.add(new BotCommand("help", "справка по командам"));
+            commands.add(new BotCommand("stats", "счётчик сообщений"));
 
             SetMyCommands setCommands = SetMyCommands.builder() // Создание меню команд
                     .commands(commands)          // Передача списка команд
@@ -77,13 +78,7 @@ public class Bot implements LongPollingSingleThreadUpdateConsumer {
             String messageText = update.getMessage().getText();
             long chatId = update.getMessage().getChatId();
 
-            String message;
-
-            if (messageText.startsWith("/")) {
-                message = botLogic.handleCommand(messageText, chatId);
-            } else {
-                message = botLogic.handleTextMessage(messageText, chatId);
-            }
+            String message = botLogic.handleMessage(messageText, chatId);
 
             sendResponse(chatId, message);
         }
